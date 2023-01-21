@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const Blog = require("./models/blogs");
-const { render } = require("ejs");
 // express app
 
 const app = express();
@@ -74,6 +73,16 @@ app.get('/blogs/:id', (req, res) => {
     .catch((err) =>{
       console.log(err);
     })
+})
+
+app.delete('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+
+  Blog.findByIdAndDelete(id)
+   .then(result => {
+     res.json({ redirect: '/blogs'})
+   })
+   .catch(err => console.log(err))
 })
 
 app.get("/blogs/create", (req, res) => {
